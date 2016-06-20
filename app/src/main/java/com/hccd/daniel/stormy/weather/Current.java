@@ -1,4 +1,6 @@
-package com.hccd.daniel.stormy;
+package com.hccd.daniel.stormy.weather;
+
+import com.hccd.daniel.stormy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,7 +9,7 @@ import java.util.TimeZone;
 /**
  * Created by daniel on 3/2/15.
  */
-public class CurrentWeather {
+public class Current {
     private String mIcon;
     private long mTime;
     private double mTemperature;
