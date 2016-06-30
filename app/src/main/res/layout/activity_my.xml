@@ -5,8 +5,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MyActivity"
-    android:background="#FFFC970B">
+    tools:context=".ui.MyActivity"
+    android:background="@drawable/bg_gradient">
 
 
     <TextView
@@ -171,6 +171,7 @@
             android:id="@+id/dailyButton"
             android:layout_weight=".5"
             android:background="#40FFFFFF"
-            android:textColor="#FFFFFFFF"/>
+            android:textColor="#FFFFFFFF"
+            android:layout_marginLeft="2dp"/>
     </LinearLayout>
 </RelativeLayout>

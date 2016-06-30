@@ -2,6 +2,7 @@ package com.hccd.daniel.stormy.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,11 +33,13 @@ import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 
 public class MyActivity extends Activity {
 
     public static final String TAG = "MainActivity.class.get";
+    public static final String DAILY_FORECAST = "DAILY_FORECAST";
 
     private Forecast mForecast;
 
@@ -150,13 +153,14 @@ public class MyActivity extends Activity {
     }
 
     private void updateDisplay() {
-        mTemperatureLabel.setText(mForecast.getCurrent().getTemperature() + "");
+        Current current = mForecast.getCurrent();
+        mTemperatureLabel.setText(current.getTemperature() + "");
         mTimeLabel.setText("At " + mForecast.getCurrent().getFormattedTime() + " it will be");
-        mHumidityValue.setText(mForecast.getCurrent().getHumidity() + "");
-        mPrecipValue.setText(mForecast.getCurrent().getPrecipChance() + "%");
-        mSummaryLabel.setText(mForecast.getCurrent().getSummary());
+        mHumidityValue.setText(current.getHumidity() + "");
+        mPrecipValue.setText(current.getPrecipChance() + "%");
+        mSummaryLabel.setText(current.getSummary());
 
-        Drawable drawable = getResources().getDrawable(mForecast.getCurrent().getIconId());
+        Drawable drawable = getResources().getDrawable(current.getIconId());
         mIconImageView.setImageDrawable(drawable);
     }
 
@@ -235,7 +239,6 @@ public class MyActivity extends Activity {
         current.setSummary(currently.getString("summary"));
         current.setIcon(currently.getString("icon"));
         current.setTimeZone(timezone);
-
         Log.d(TAG, current.getFormattedTime());
 
         return current;
@@ -258,4 +261,12 @@ public class MyActivity extends Activity {
         AlertDialogFragment dialog = new AlertDialogFragment();
         dialog.show(getFragmentManager(), "error_dialog");
     }
+
+    @OnClick (R.id.dailyButton)
+    public void startDailyActivity(View view){
+        Intent intent = new Intent(this, DailyForecastActivity.class);
+        intent.putExtra(DAILY_FORECAST, mForecast.getDailyForecast());
+        startActivity(intent);
+    }
+
 }

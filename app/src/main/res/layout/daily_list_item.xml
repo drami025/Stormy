@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="64dp"
+                android:paddingStart="64dp"
+                android:paddingRight="32dp"
+                android:paddingEnd="32dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                tools:background="#ffaa00">
+
+    <ImageView
+        android:src="@drawable/bg_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:id="@+id/circleImageView"
+        android:contentDescription="@string/list_item_temperature_description"/>
+
+    <ImageView
+        android:src="@drawable/clear_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/circleImageView"
+        android:layout_toEndOf="@+id/circleImageView"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:id="@+id/iconImageView"
+        android:contentDescription="@string/list_item_day_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iconImageView"
+        android:layout_toEndOf="@+id/iconImageView"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:id="@+id/dayNameLabel"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        tools:text="Wednesday"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/circleImageView"
+        android:layout_alignBottom="@+id/circleImageView"
+        android:layout_alignLeft="@+id/circleImageView"
+        android:layout_alignStart="@+id/circleImageView"
+        android:layout_alignRight="@+id/circleImageView"
+        android:layout_alignEnd="@+id/circleImageView"
+        android:id="@+id/temperatureLabel"
+        android:gravity="center"
+        android:textColor="#fff25019"
+        tools:text="100"/>
+</RelativeLayout>

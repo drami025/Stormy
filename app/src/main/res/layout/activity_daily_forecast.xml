@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/activity_daily_forecast"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hccd.daniel.stormy.ui.DailyForecastActivity"
+    tools:layout_editor_absoluteX="32dp"
+    tools:layout_editor_absoluteY="41dp"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:background="@drawable/bg_gradient">
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffffff"
+        android:text="@string/no_daily_forecast_data"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="259dp"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_daily_forecast"
+        tools:layout_constraintLeft_creator="0"
+        app:layout_constraintTop_toTopOf="@+id/activity_daily_forecast"
+        tools:layout_constraintTop_creator="0"
+        app:layout_constraintRight_toRightOf="@+id/activity_daily_forecast"
+        tools:layout_constraintRight_creator="0"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_daily_forecast"
+        tools:layout_constraintBottom_creator="0"/>
+
+    <ListView
+        android:layout_width="304dp"
+        android:layout_height="567dp"
+        android:id="@android:id/list"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="-16dp"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_daily_forecast"
+        tools:layout_constraintLeft_creator="0"
+        app:layout_constraintTop_toTopOf="@+id/activity_daily_forecast"
+        tools:layout_constraintTop_creator="0"
+        app:layout_constraintRight_toRightOf="@+id/activity_daily_forecast"
+        tools:layout_constraintRight_creator="0"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_daily_forecast"
+        tools:layout_constraintBottom_creator="0"/>
+
+</android.support.constraint.ConstraintLayout>
