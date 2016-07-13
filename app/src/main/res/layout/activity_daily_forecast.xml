@@ -16,6 +16,24 @@
     android:background="@drawable/bg_gradient">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Test"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:id="@+id/thisWeekLabel"
+        android:text="@string/this_week_label"
+        android:textColor="#ffffffff"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_daily_forecast"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toTopOf="@+id/activity_daily_forecast"
+        android:layout_marginTop="16dp"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/activity_daily_forecast"
+        tools:layout_constraintRight_creator="1"/>
+
+    <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,27 +42,49 @@
         tools:layout_editor_absoluteX="50dp"
         tools:layout_editor_absoluteY="259dp"
         app:layout_constraintLeft_toLeftOf="@+id/activity_daily_forecast"
-        tools:layout_constraintLeft_creator="0"
+        tools:layout_constraintLeft_creator="1"
         app:layout_constraintTop_toTopOf="@+id/activity_daily_forecast"
-        tools:layout_constraintTop_creator="0"
+        tools:layout_constraintTop_creator="1"
         app:layout_constraintRight_toRightOf="@+id/activity_daily_forecast"
-        tools:layout_constraintRight_creator="0"
+        tools:layout_constraintRight_creator="1"
         app:layout_constraintBottom_toBottomOf="@+id/activity_daily_forecast"
-        tools:layout_constraintBottom_creator="0"/>
+        tools:layout_constraintBottom_creator="1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/locationLabel"
+        android:text="@string/location_label_text"
+        android:textColor="#ffffffff"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="111dp"
+        tools:layout_editor_absoluteY="503dp"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_daily_forecast"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/activity_daily_forecast"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_daily_forecast"
+        android:layout_marginBottom="10dp"
+        tools:layout_constraintBottom_creator="1"/>
 
     <ListView
-        android:layout_width="304dp"
-        android:layout_height="567dp"
+        android:paddingTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:id="@android:id/list"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="-16dp"
+        tools:layout_editor_absoluteY="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/activity_daily_forecast"
-        tools:layout_constraintLeft_creator="0"
-        app:layout_constraintTop_toTopOf="@+id/activity_daily_forecast"
-        tools:layout_constraintTop_creator="0"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        tools:layout_constraintLeft_creator="1"
         app:layout_constraintRight_toRightOf="@+id/activity_daily_forecast"
-        tools:layout_constraintRight_creator="0"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_daily_forecast"
-        tools:layout_constraintBottom_creator="0"/>
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/locationLabel"
+        app:layout_constraintTop_toBottomOf="@id/thisWeekLabel"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -43,8 +43,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alcatraz Island, CA"
-        android:id="@+id/locationLabel"
+        android:text="@string/current_location_label"
+        android:id="@+id/currentLocationLabel"
         android:layout_above="@+id/timeLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"

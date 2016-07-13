@@ -3,8 +3,8 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="64dp"
-                android:paddingStart="64dp"
+                android:paddingLeft="32dp"
+                android:paddingStart="32dp"
                 android:paddingRight="32dp"
                 android:paddingEnd="32dp"
                 android:paddingTop="4dp"
@@ -46,7 +46,8 @@
         android:id="@+id/dayNameLabel"
         android:textColor="#ffffff"
         android:textSize="20sp"
-        tools:text="Wednesday"/>
+        tools:text="Wednesday"
+        android:maxLines="1"/>
 
     <TextView
         android:layout_width="wrap_content"

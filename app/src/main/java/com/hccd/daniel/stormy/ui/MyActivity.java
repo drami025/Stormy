@@ -1,9 +1,15 @@
 package com.hccd.daniel.stormy.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,18 +36,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class MyActivity extends Activity {
+public class MyActivity extends Activity implements LocationListener{
 
     public static final String TAG = "MainActivity.class.get";
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
 
     private Forecast mForecast;
+    private LocationManager mLocationManager;
 
     @InjectView(R.id.temperatureLabel) TextView mTemperatureLabel;
     @InjectView(R.id.timeLabel) TextView mTimeLabel;
@@ -51,6 +59,7 @@ public class MyActivity extends Activity {
     @InjectView(R.id.summaryLabel) TextView mSummaryLabel;
     @InjectView(R.id.refreshImageView) ImageView mRefreshImageView;
     @InjectView(R.id.progressBar) ProgressBar mProgressBar;
+    @InjectView(R.id.currentLocationLabel) TextView mCurrentLocationLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +69,25 @@ public class MyActivity extends Activity {
 
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        final double latitude = 37.8267;
-        final double longitude = -122.423;
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         mRefreshImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getForecast(latitude, longitude);
+                String provider = mLocationManager.getBestProvider(new Criteria(), false);
+                mLocationManager.requestSingleUpdate(provider, MyActivity.this, null);
             }
         });
 
-        getForecast(latitude, longitude);
+        if(enabled || isNetworkAvailable()) {
+            Location location = getLastKnownLocation();
+            getCityAndState(location.getLatitude(), location.getLongitude());
+            getForecast(location.getLatitude(), location.getLongitude());
+        }
+        else{
+            alertUserAboutGPS();
+        }
 
         Log.d(TAG, "Main UI code is running.");
     }
@@ -140,6 +157,90 @@ public class MyActivity extends Activity {
         }
     }
 
+    private void getCityAndState(double latitude, double longitude){
+        String mapsUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng="
+                + latitude + "," + longitude;
+
+        if(isNetworkAvailable()){
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(mapsUrl)
+                    .build();
+
+            Call call = client.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String unavailable_loc = MyActivity.this.getResources()
+                                    .getResourceName(R.string.unavailable_location);
+                            mCurrentLocationLabel.setText(unavailable_loc);
+                        }
+                    });
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    String jsonData = response.body().string();
+                    if(response.isSuccessful()){
+                        try {
+                            final String cityState = parseLocationDetails(jsonData);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mCurrentLocationLabel.setText(cityState);
+                                }
+                            });
+                        }
+                        catch (JSONException e){
+                            alertUserAboutError();
+                        }
+                    }
+                    else{
+                        alertUserAboutError();
+                    }
+                }
+            });
+        }
+    }
+
+    private String parseLocationDetails(String jsonData) throws  JSONException{
+        JSONObject location = new JSONObject(jsonData);
+        JSONArray results = location.getJSONArray("results");
+        JSONObject firstResult = results.getJSONObject(0);
+        JSONArray addressComponents = firstResult.getJSONArray("address_components");
+
+        String city = null;
+        String state = null;
+
+        for(int i = 0; i < addressComponents.length(); i++){
+            JSONObject obj = addressComponents.getJSONObject(i);
+            JSONArray types = obj.getJSONArray("types");
+            String t = "";
+            for(int j = 0; j < types.length(); j++){
+                t = types.getString(j);
+                if(t.equals("neighborhood") || t.equals("administrative_area_level_1")){
+                    break;
+                }
+            }
+
+            if(t.equals("neighborhood")){
+                city = obj.getString("long_name");
+            }
+            else if(t.equals("administrative_area_level_1")){
+                state = obj.getString("short_name");
+            }
+
+            if(city != null && state != null){
+                break;
+            }
+        }
+
+        return city + ", " + state;
+    }
+
     private void toggleRefresh() {
 
         if(mProgressBar.getVisibility() == View.INVISIBLE) {
@@ -163,7 +264,6 @@ public class MyActivity extends Activity {
         Drawable drawable = getResources().getDrawable(current.getIconId());
         mIconImageView.setImageDrawable(drawable);
     }
-
 
     private Forecast parseForecastDetails(String jsonData) throws JSONException{
         Forecast forecast = new Forecast();
@@ -262,6 +362,46 @@ public class MyActivity extends Activity {
         dialog.show(getFragmentManager(), "error_dialog");
     }
 
+    private void alertUserAboutGPS(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("GPS not available")
+                .setMessage("Please turn on GPS in your settings")
+                .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Close app", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        System.exit(0);
+                    }
+                });
+
+        builder.create().show();
+    }
+
+    private Location getLastKnownLocation() {
+        mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
+
+
     @OnClick (R.id.dailyButton)
     public void startDailyActivity(View view){
         Intent intent = new Intent(this, DailyForecastActivity.class);
@@ -269,4 +409,31 @@ public class MyActivity extends Activity {
         startActivity(intent);
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        getForecast(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onResume(){
+        Location location = getLastKnownLocation();
+        getCityAndState(location.getLatitude(), location.getLongitude());
+        getForecast(location.getLatitude(), location.getLongitude());
+        super.onResume();
+    }
 }

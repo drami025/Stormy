@@ -11,6 +11,11 @@
     <string name="no_daily_forecast_data">There is no daily forecast to display</string>
     <string name="list_item_temperature_description">Image for temperature</string>
     <string name="list_item_day_icon">Icon for the day</string>
+    <string name="this_week_label">This Week\'s Weather</string>
+    <string name="location_label_text">Alcatraz, CA</string>
+    <string name="today_text">Today</string>
+    <string name="current_location_label">Alcatraz Island, CA</string>
+    <string name="unavailable_location">Location Unavailable</string>
 
     <string-array name="days_of_the_week">
         <item>Sunday</item>
