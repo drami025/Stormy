@@ -47,6 +47,8 @@ public class MyActivity extends Activity implements LocationListener{
 
     public static final String TAG = "MainActivity.class.get";
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
+    public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
+    public static final String LOCATION_NAME = "LOCATION_NAME";
 
     private Forecast mForecast;
     private LocationManager mLocationManager;
@@ -406,6 +408,14 @@ public class MyActivity extends Activity implements LocationListener{
     public void startDailyActivity(View view){
         Intent intent = new Intent(this, DailyForecastActivity.class);
         intent.putExtra(DAILY_FORECAST, mForecast.getDailyForecast());
+        intent.putExtra(LOCATION_NAME, mCurrentLocationLabel.getText().toString());
+        startActivity(intent);
+    }
+
+    @OnClick (R.id.hourlyButton)
+    public void startHourlyActivity(View view){
+        Intent intent = new Intent(this, HourlyForecastActivity.class);
+        intent.putExtra(HOURLY_FORECAST, mForecast.getHourlyForecast());
         startActivity(intent);
     }
 

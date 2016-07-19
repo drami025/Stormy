@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/locationLabel"
-        android:text="@string/location_label_text"
+        tools:text="@string/location_label_text"
         android:textColor="#ffffffff"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="111dp"
@@ -65,7 +65,8 @@
         tools:layout_constraintRight_creator="1"
         app:layout_constraintBottom_toBottomOf="@+id/activity_daily_forecast"
         android:layout_marginBottom="10dp"
-        tools:layout_constraintBottom_creator="1"/>
+        tools:layout_constraintBottom_creator="1"
+        />
 
     <ListView
         android:paddingTop="16dp"
